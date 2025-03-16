@@ -1,0 +1,38 @@
+/* text-size-adjust */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%; /* Standard property last */
+}
+
+/* backdrop-filter */
+.element {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* user-select */
+.selectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none; /* Standard property last */
+}
+
+/* display properties */
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; /* Standard property last */
+}
+
+/* background-clip */
+.header {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* tab-size */
+pre {
+  -moz-tab-size: 4;
+  tab-size: 4;
+}

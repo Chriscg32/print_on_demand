@@ -1,0 +1,4 @@
+{
+    "exclude": ["venv"],
+    "reportMissingImports": false
+  }
