@@ -1,4 +1,3 @@
-cat > butterflyblue-backend/app/middleware/auth.py << 'EOL'
 from functools import wraps
 from flask import request, jsonify
 import jwt
@@ -35,8 +34,3 @@ def token_required(f):
         return f(user_id, *args, **kwargs)
     
     return decorated
-EOL
-
-# Format and verify
-black butterflyblue-backend/app/middleware/auth.py
-python -m py_compile butterflyblue-backend/app/middleware/auth.py
