@@ -10,7 +10,7 @@ from flask_migrate import Migrate
 from app import create_app, db
 
 app = create_app()
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, directory=os.path.join(os.path.dirname(__file__), 'migrations'))
 cli = FlaskGroup(app)
 
 if __name__ == '__main__':
