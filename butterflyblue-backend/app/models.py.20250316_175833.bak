@@ -1,9 +1,5 @@
 # butterflyblue-backend/app/models.py
-from flask_sqlalchemy import SQLAlchemy
-
-# This is only used for type hints
-db = SQLAlchemy()
-
+from app import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
