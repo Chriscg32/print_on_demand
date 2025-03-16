@@ -30,4 +30,4 @@ class Product(db.Model):
             'description': self.description,
             'title': self.title,
             'last_synced': self.last_synced.isoformat() if self.last_synced else None
-        })
+        }
