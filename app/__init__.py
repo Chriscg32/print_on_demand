@@ -24,12 +24,17 @@ def create_app():
     CORS(app)
     
     # Import and register blueprints
-    from app.routes.products import products_bp
+    from butterflyblue_backend.app.routes.products import products_bp
     app.register_blueprint(products_bp, url_prefix='/api')
     
     # Create a route for the root URL
     @app.route('/')
     def index():
         return "Welcome to ButterflyBlue API"
+    
+    # Add an error handler
+    @app.errorhandler(500)
+    def handle_500(error):
+        return {"error": "Internal Server Error", "message": str(error)}, 500
     
     return app
