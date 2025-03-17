@@ -1,10 +1,9 @@
-# init_db.py
 import sys
 import os
 
 # Add the project directory to the Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'butterflyblue-backend'))
+sys.path.insert(0, 'butterflyblue-backend')
 
 from app import create_app, db
 from app.models import Product
