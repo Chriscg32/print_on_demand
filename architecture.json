@@ -1,0 +1,47 @@
+{
+  "root": "/usr/local",
+  "system_version": "1.0.0",
+  "nodes": [
+    {
+      "name": "application-server",
+      "path": "/usr/local/app-server",
+      "perms": "rw-r--r--",
+      "sensitive": false,
+      "integrity_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "database-server",
+      "path": "/var/lib/db-server",
+      "perms": "rwx------",
+      "sensitive": true,
+      "encryption": "AES-256-GCM",
+      "backup_schedule": "daily-0300UTC",
+      "access_control": "role-based"
+    },
+    {
+      "name": "web-server",
+      "path": "/usr/local/web-server",
+      "perms": "rwxr-xr-x",
+      "sensitive": false,
+      "load_balancing": true,
+      "ssl_enabled": true,
+      "certificate_path": "/etc/ssl/certs/web-server.crt"
+    }
+  ],
+  "network": {
+    "topology": "three-tier",
+    "firewall_rules": [
+      {"source": "web-server", "destination": "application-server", "ports": [8080]},
+      {"source": "application-server", "destination": "database-server", "ports": [5432]}
+    ],
+    "vpn_required": true
+  },
+  "monitoring": {
+    "log_retention": "90-days",
+    "alert_thresholds": {
+      "cpu_usage": 85,
+      "memory_usage": 90,
+      "disk_usage": 80
+    }
+  }
+}

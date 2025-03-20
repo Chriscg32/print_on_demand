@@ -1,36 +1,35 @@
-import json
-import pandas as pd
+import os  
+import requests  
+from dotenv import load_dotenv  
 
-# Load Printify data
-with open('printify_products.json') as f:
-    printify_data = json.load(f)
+load_dotenv(dotenv_path=r'C:\Users\chris\cgapp\print_on_demand\.env')  
 
-# Load Shopify CSV from the exact path
-shopify_path = "C:/Users/chris/cgapp/print_on_demand/shopify_products.csv"  # <-- Updated path
-shopify_df = pd.read_csv(shopify_path)
+def push_to_shopify(printify_product_id):  
+    """Publish product to Shopify via Printify API"""  
+    try:  
+        url = f"https://api.printify.com/v1/shops/{os.getenv('PRINTIFY_SHOP_ID')}/products/{printify_product_id}/publish.json"  
+        headers = {"Authorization": f"Bearer {os.getenv('PRINTIFY_API_KEY')}"}  
+        payload = {  
+            "title": "AI-Generated Design",  
+            "blueprint_id": int(os.getenv("PRINTIFY_BLUEPRINT_ID")),  
+            "print_provider_id": int(os.getenv("PRINTIFY_PROVIDER_ID")),  
+            "visible": True  
+        }  
+        response = requests.post(url, headers=headers, json=payload)  
+        response.raise_for_status()  
+        return response.json().get("id")  
+    except Exception as e:  
+        print(f"❌ Error: {e}\nAPI Response: {response.text}")  
+        return None  
 
-# Check mismatches
-mismatches = []
-for product in printify_data['data']:
-    for variant in product['variants']:
-        sku = variant['sku']
-        printify_price = variant['price'] / 100  # Convert cents to dollars
-        shopify_variant = shopify_df[shopify_df['SKU'] == sku]
-
-        if shopify_variant.empty:
-            mismatches.append(f"SKU {sku} missing in Shopify")
-        else:
-            shopify_price_val = shopify_variant['Price'].values[0]
-            if shopify_price_val != printify_price:
-                mismatches.append(
-                    f"Price mismatch for SKU {sku}: "
-                    f"Shopify=${shopify_price_val}, Printify=${printify_price}"
-                )
-
-# Print results
-if mismatches:
-    print("🚨 Issues found:")
-    for issue in mismatches:
-        print(issue)
-else:
-    print("✅ All SKUs and prices are synced!")
+def get_shopify_product(shopify_product_id):  
+    """Fetch product details from Shopify"""  
+    try:  
+        url = f"https://{os.getenv('SHOPIFY_STORE_NAME')}/admin/api/2024-01/products/{shopify_product_id}.json"  
+        auth = (os.getenv("SHOPIFY_API_KEY"), os.getenv("SHOPIFY_API_SECRET"))  
+        response = requests.get(url, auth=auth)  
+        response.raise_for_status()  
+        return response.json()["product"]  
+    except Exception as e:  
+        print(f"❌ Error: {e}")  
+        return None  

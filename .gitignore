@@ -9,3 +9,10 @@ __pycache__/
 dist/
 build/
 .qodo
+*.bak
+*.bak~
+/node_modules/
+.env
+__pycache__# .env (gitignored)
+FLASK_SECRET_KEY='your-prod-key'
+DATABASE_URL='sqlite:///prod.db'

@@ -4,7 +4,6 @@ from logging.config import fileConfig
 from flask import current_app
 
 from alembic import context
-from butterflyblue_backend.app.models import User, DesignProduct  # Adjust according to your model names
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -12,7 +11,8 @@ config = context.config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-fileConfig(config.config_file_name)
+
+fileConfig(config.config_file_name, disable_existing_loggers=False)
 logger = logging.getLogger('alembic.env')
 
 
@@ -84,13 +84,13 @@ def run_migrations_online():
     # this callback is used to prevent an auto-migration from being generated
     # when there are no changes to the schema
     # reference: http://alembic.zzzcomputing.com/en/latest/cookbook.html
-    def process_revision_directives(context, revision, directives):
+    def process_revision_directives(ctx, revision, directives):
         if getattr(config.cmd_opts, 'autogenerate', False):
             script = directives[0]
             if script.upgrade_ops.is_empty():
-                directives[:] = []
-                logger.info('No changes in schema detected.')
+                directives.clear()
 
+                logger.info('No changes in schema detected.')
     conf_args = current_app.extensions['migrate'].configure_args
     if conf_args.get("process_revision_directives") is None:
         conf_args["process_revision_directives"] = process_revision_directives
@@ -106,7 +106,6 @@ def run_migrations_online():
 
         with context.begin_transaction():
             context.run_migrations()
-
 
 if context.is_offline_mode():
     run_migrations_offline()

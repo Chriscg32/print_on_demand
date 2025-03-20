@@ -1,1 +1,1 @@
-from butterflyblue_backend.app.models import User, DesignProduct  # Adjust according to your model names
+web: gunicorn butterflyblue_backend.app:app
