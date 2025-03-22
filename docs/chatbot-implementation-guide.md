@@ -1,15 +1,18 @@
 # AI Chatbot Implementation Guide (Zero Budget)
 
 ## Overview
+
 This guide outlines how to implement a free AI chatbot using Google's Dialogflow for your print-on-demand business. This solution provides basic customer support automation without any upfront costs.
 
 ## Step 1: Set Up Dialogflow Account
 
 1. **Create a Google Cloud Account**
+
    - Go to [cloud.google.com](https://cloud.google.com/) and sign up for a free account
    - No credit card is required for the free tier
 
 2. **Enable Dialogflow API**
+
    - In the Google Cloud Console, navigate to "APIs & Services"
    - Search for "Dialogflow API" and enable it
    - The free tier includes:
@@ -17,6 +20,7 @@ This guide outlines how to implement a free AI chatbot using Google's Dialogflow
      - Basic natural language understanding
 
 3. **Create a New Agent**
+
    - Go to [dialogflow.cloud.google.com](https://dialogflow.cloud.google.com/)
    - Click "Create Agent"
    - Name it "PrintOnDemandSupport"
@@ -28,6 +32,7 @@ This guide outlines how to implement a free AI chatbot using Google's Dialogflow
 Intents are the different types of customer queries your chatbot will handle. Start with these essential intents:
 
 ### 1. Welcome Intent
+
 - **Training phrases**: 
   - "Hello"
   - "Hi"
@@ -37,6 +42,7 @@ Intents are the different types of customer queries your chatbot will handle. St
   - "Welcome to our Print-on-Demand support! I can help with order status, product information, and customization questions. What can I assist you with today?"
 
 ### 2. Order Status Intent
+
 - **Training phrases**:
   - "Where is my order?"
   - "Track my order"
@@ -49,6 +55,7 @@ Intents are the different types of customer queries your chatbot will handle. St
   - With order number: "Thanks for providing your order number. To check your order status, please visit our tracking page at [your-website.com/track] and enter your order number."
 
 ### 3. Product Information Intent
+
 - **Training phrases**:
   - "Tell me about your t-shirts"
   - "What products do you offer?"
@@ -61,6 +68,7 @@ Intents are the different types of customer queries your chatbot will handle. St
   - Specific product: "Our [product type] are high-quality and fully customizable. You can upload your own designs or use our design tools to create something unique."
 
 ### 4. Pricing Intent
+
 - **Training phrases**:
   - "How much do t-shirts cost?"
   - "Pricing"
@@ -72,6 +80,7 @@ Intents are the different types of customer queries your chatbot will handle. St
   - Specific product: "Our [product type] start at $[price]. The final price depends on the customization options you choose."
 
 ### 5. Fallback Intent
+
 - **Default Fallback Intent**: Automatically triggered when no other intent matches
 - **Responses**:
   - "I'm sorry, I didn't understand that. Could you rephrase your question? I can help with order status, product information, and pricing."
@@ -82,6 +91,7 @@ Intents are the different types of customer queries your chatbot will handle. St
 Entities are categories of information your chatbot can recognize:
 
 ### 1. ProductType Entity
+
 - **Entity values**:
   - T-shirt (synonyms: tee, shirt, tshirt)
   - Hoodie (synonyms: sweatshirt, hooded sweatshirt)

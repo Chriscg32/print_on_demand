@@ -129,16 +129,24 @@ const MarketingAPI = {
    * Track marketing campaign performance
    * 
    * @param {string} campaignId - ID of the campaign to track
+   * @param {Object} metrics - Optional metrics to include
    * @returns {Promise<Object>} - Promise resolving to campaign performance metrics
    * @throws {Error} When the API request fails
    */
-  trackCampaignPerformance: async (campaignId) => {
+  trackCampaignPerformance: async (campaignId, metrics = {}) => {
     try {
       if (!campaignId) {
         throw new Error('Campaign ID is required');
       }
       
-      const response = await axios.get(`${API_BASE_URL}/marketing/campaigns/${campaignId}/performance`);
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        params: metrics
+      };
+      
+      const response = await axios.get(`${API_BASE_URL}/marketing/campaigns/${campaignId}/performance`, config);
       
       return response.data;
     } catch (error) {

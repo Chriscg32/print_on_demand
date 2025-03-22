@@ -1,0 +1,64 @@
+{
+  "frontend": {
+    "buildSuccess": false,
+    "browserCompatibility": {},
+    "performance": {},
+    "accessibility": {},
+    "errors": [
+      "Build error: Command failed: npm run build\nnpm ERR! Missing script: \"build\"\nnpm ERR! \nnpm ERR! To see a list of scripts, run:\nnpm ERR!   npm run\n\nnpm ERR! A complete log of this run can be found in: C:\\Users\\chris\\AppData\\Local\\npm-cache\\_logs\\2025-03-22T20_19_47_758Z-debug-0.log\n",
+      "Lighthouse error: Cannot read properties of undefined (reading 'launch')",
+      "Browser test error: Cannot read properties of undefined (reading 'launch')"
+    ]
+  },
+  "backend": {
+    "apiResponses": {
+      "/api/users": {
+        "status": 404,
+        "responseTime": 153,
+        "success": false,
+        "performancePass": true
+      },
+      "/api/products": {
+        "status": 404,
+        "responseTime": 29,
+        "success": false,
+        "performancePass": true
+      }
+    },
+    "latency": {},
+    "errors": [
+      "Serverless scaling error: Request failed with status code 404"
+    ]
+  },
+  "networking": {
+    "cdn": {
+      "headers": {
+        "cache": "public, max-age=0, must-revalidate",
+        "server": "Vercel",
+        "content-type": "text/html; charset=utf-8",
+        "x-vercel-cache": "HIT"
+      },
+      "cacheHit": true,
+      "hasCorrectCacheControl": true,
+      "pass": false
+    },
+    "security": {
+      "headers": {
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "content-security-policy": null,
+        "x-content-type-options": null,
+        "x-frame-options": null,
+        "x-xss-protection": null,
+        "referrer-policy": null
+      },
+      "presentHeadersCount": 1,
+      "pass": false
+    },
+    "errors": []
+  },
+  "deployment": {
+    "gitIntegration": false,
+    "buildProcess": false,
+    "errors": []
+  }
+}

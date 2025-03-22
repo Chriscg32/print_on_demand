@@ -1,6 +1,7 @@
 # UI Implementation Guide for Print-on-Demand Business
 
 ## Overview
+
 This guide outlines how to implement a simplistic, modern, and color-blind friendly UI for your print-on-demand business using Figma (free plan) and the existing components in your project.
 
 ## Step 1: Figma Setup
@@ -8,6 +9,7 @@ This guide outlines how to implement a simplistic, modern, and color-blind frien
 1. **Create a free Figma account** at [figma.com](https://www.figma.com/)
 2. **Create a new design file** named "Print-on-Demand UI"
 3. **Set up a color palette** using the existing color-blind friendly palette:
+
    - Primary: #4A90E2 (blue)
    - Secondary: #50E3C2 (teal)
    - Text: #2D2D2D
@@ -24,27 +26,34 @@ This guide outlines how to implement a simplistic, modern, and color-blind frien
 ## Step 2: Design System Components
 
 ### Navigation
+
 1. Create a navigation bar with hover-enabled dropdown menus
 2. Ensure contrast between text and background (minimum 4.5:1 ratio)
 3. Add visual indicators for hover states (color change + underline)
 4. Design a mobile-responsive collapsible menu
 
 ### Buttons
+
 1. Design primary and secondary buttons with:
+
    - Clear hover states
    - Focus indicators for keyboard navigation
    - Consistent padding and border radius
    - Text that meets contrast requirements
 
 ### Cards
+
 1. Design product cards with:
+
    - Hover effects (slight elevation)
    - Clear product information hierarchy
    - Accessible action buttons
    - Optional image placeholders
 
 ### Status Indicators
+
 1. Implement status indicators with:
+
    - Color AND pattern differentiation (for color-blind users)
    - Clear text labels
    - Consistent positioning
@@ -52,25 +61,30 @@ This guide outlines how to implement a simplistic, modern, and color-blind frien
 ## Step 3: Page Layouts
 
 ### Home Page
+
 1. Design a clean, grid-based layout
 2. Feature top-selling products prominently
 3. Include clear navigation to product categories
 4. Add space for promotional content
 
 ### Product Category Pages
+
 1. Design a responsive grid for product listings
 2. Include filtering and sorting options
 3. Ensure product cards display essential information
 4. Add pagination or infinite scroll
 
 ### Product Detail Page
+
 1. Design a layout with:
+
    - Clear product images
    - Customization options
    - Add to cart functionality
    - Related products section
 
 ### Cart & Checkout
+
 1. Design a streamlined checkout process
 2. Include order summary
 3. Add payment method selection
@@ -142,14 +156,17 @@ Your project already contains excellent UI components in the `ui/` directory. To
 ## Step 5: Testing for Accessibility
 
 1. **Color Contrast Testing**
+
    - Use WebAIM's Contrast Checker (free): https://webaim.org/resources/contrastchecker/
    - Ensure all text meets WCAG AA standards (4.5:1 for normal text, 3:1 for large text)
 
 2. **Color Blindness Simulation**
+
    - Use Figma's color blindness simulation plugin (free)
    - Test designs with different types of color blindness (protanopia, deuteranopia, tritanopia)
 
 3. **Keyboard Navigation Testing**
+
    - Test all interactive elements with keyboard-only navigation
    - Ensure focus states are clearly visible
    - Verify that all functionality is accessible without a mouse

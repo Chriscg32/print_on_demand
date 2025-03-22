@@ -2,13 +2,15 @@
 
 ## 1. Database Migration System Implementation
 
-### Action Items:
+### Action Items
+
 - Implement Knex.js for SQLite migrations
 - Create initial schema migration
 - Add version tracking table
 - Implement rollback capability
 
-### Code Example:
+### Code Example
+
 ```javascript
 // migrations/20230401_initial_schema.js
 exports.up = function(knex) {
@@ -28,13 +30,15 @@ exports.down = function(knex) {
 
 ## 2. Environment Configuration Validation
 
-### Action Items:
+### Action Items (2)
+
 - Implement dotenv-safe for validation
 - Create .env.example with required variables
 - Add environment validation on startup
 - Document all environment variables
 
-### Code Example:
+### Code Example (2)
+
 ```javascript
 // src/config/env.js
 const dotenvSafe = require('dotenv-safe');
@@ -55,13 +59,15 @@ module.exports = {
 
 ## 3. Accessibility Implementation
 
-### Action Items:
+### Action Items (3)
+
 - Add axe-core for automated accessibility testing
 - Implement focus management for keyboard navigation
 - Create colorblind simulation tests
 - Add ARIA attributes to all interactive elements
 
-### Code Example:
+### Code Example (3)
+
 ```javascript
 // tests/accessibility/color.test.js
 const { toHaveNoViolations } = require('jest-axe');
@@ -78,13 +84,15 @@ describe('Color Contrast Tests', () => {
 
 ## 4. SQLCipher Cross-Platform Integration
 
-### Action Items:
+### Action Items (4)
+
 - Create platform-specific installation scripts
 - Implement Docker-based development environment
 - Add better error handling for encryption failures
 - Create database connection pooling
 
-### Code Example:
+### Code Example (4)
+
 ```javascript
 // src/db/pool.js
 const { createPool } = require('generic-pool');
@@ -109,13 +117,15 @@ module.exports = dbPool;
 
 ## 5. Navigation System Enhancement
 
-### Action Items:
+### Action Items (5)
+
 - Implement hover-activated dropdown menus
 - Add breadcrumb navigation component
 - Create mobile-responsive navigation
 - Implement keyboard accessibility for menus
 
-### Code Example:
+### Code Example (5)
+
 ```javascript
 // src/components/Navigation/HoverMenu.jsx
 import React, { useState } from 'react';

@@ -5,26 +5,31 @@
 ButterflyBlue Creations uses the following logo variations:
 
 ### Primary Logo
+
 - Full color on transparent background
 - Used for most applications on light backgrounds
 - File: `primary_logo.png`
 
 ### White Logo
+
 - White version for use on dark backgrounds
 - Maintains brand recognition on colored backgrounds
 - File: `white_logo.png`
 
 ### Square Logo
+
 - Optimized for social media profiles
 - 1:1 aspect ratio
 - File: `square_logo.png`
 
 ### Favicon
+
 - Simplified version for browser tabs
 - 16x16 pixels
 - File: `favicon.ico`
 
 ### Vector Logo
+
 - Scalable version for print applications
 - File: `logo_vector.svg`
 
@@ -64,22 +69,26 @@ The following uses of the logo are not permitted:
 ## Logo Placement
 
 ### Website
+
 - Place the logo in the top left corner of all pages
 - Link the logo to the homepage
 - Use the full color version on white/light backgrounds
 - Use the white version on dark backgrounds
 
 ### Social Media
+
 - Use the square version for profile pictures
 - Use the full logo for cover images and headers
 - Maintain consistent placement across all platforms
 
 ### Print-on-Demand Products
+
 - Use as a subtle brand mark on appropriate products
 - Consider a simplified version for small imprint areas
 - Follow your Print-on-Demand specific rules for placement
 
 ### Marketing Materials
+
 - Position prominently on all marketing materials
 - Maintain consistent size relationship with other elements
 - Ensure the logo stands out against backgrounds

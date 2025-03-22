@@ -1,48 +1,30 @@
-import React from 'react'
+import React from 'react';
 
-const Navigation: React.FC = () => {
-  const handleNavigation = (route: string) => {
-    // Navigation logic here
-    console.log(`Navigating to ${route}`);
-  };
-
-  return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <span className="text-xl font-bold text-primary">PrintOnDemand</span>
-          </div>
-          <div className="hidden md:flex space-x-8">
-            <button 
-              onClick={() => handleNavigation('products')} 
-              className="text-text hover:text-primary hover-transition bg-transparent border-none cursor-pointer"
-            >
-              Products
-            </button>
-            <button 
-              onClick={() => handleNavigation('custom-order')} 
-              className="text-text hover:text-primary hover-transition bg-transparent border-none cursor-pointer"
-            >
-              Custom Order
-            </button>
-            <button 
-              onClick={() => handleNavigation('about')} 
-              className="text-text hover:text-primary hover-transition bg-transparent border-none cursor-pointer"
-            >
-              About
-            </button>
-            <button 
-              onClick={() => handleNavigation('contact')} 
-              className="text-text hover:text-primary hover-transition bg-transparent border-none cursor-pointer"
-            >
-              Contact
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
-  )
+interface NavProps {
+  items: Array<{
+    id: string;
+    label: string;
+    href: string;
+  }>;
 }
 
-export default Navigation
+export const Navigation: React.FC<NavProps> = ({ items }) => {
+  return (
+    <nav aria-label="Main navigation" role="navigation">
+      <ul role="menubar">
+        {items.map((item) => (
+          <li key={item.id} role="none">
+            <a
+              href={item.href}
+              role="menuitem"
+              aria-label={item.label}
+              tabIndex={0}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+};

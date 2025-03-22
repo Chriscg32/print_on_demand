@@ -1,0 +1,314 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Infrastructure for Print-on-Demand application blue-green deployment'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: production
+    AllowedValues:
+      - production
+      - staging
+    Description: The environment to deploy to
+
+  DomainName:
+    Type: String
+    Default: printapp.example.com
+    Description: The domain name for the application
+
+Resources:
+  # S3 Buckets for blue and green environments
+  BlueBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${Environment}-blue-printapp-bucket"
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ['*']
+            AllowedMethods: [GET]
+            AllowedOrigins: ['*']
+            MaxAge: 3000
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Deployment
+          Value: Blue
+
+  GreenBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${Environment}-green-printapp-bucket"
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ['*']
+            AllowedMethods: [GET]
+            AllowedOrigins: ['*']
+            MaxAge: 3000
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Deployment
+          Value: Green
+
+  # Bucket for deployment backups
+  BackupBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${Environment}-backup-printapp-bucket"
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldBackups
+            Status: Enabled
+            ExpirationInDays: 30
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Purpose
+          Value: Backup
+
+  # CloudFront distribution
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref DomainName
+        DefaultRootObject: index.html
+        Enabled: true
+        HttpVersion: http2
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          AcmCertificateArn: !Sub "arn:aws:acm:us-east-1:${AWS::AccountId}:certificate/example-certificate-id"
+          MinimumProtocolVersion: TLSv1.2_2019
+          SslSupportMethod: sni-only
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt ActiveBucket.WebsiteURL
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          DefaultTTL: 86400
+          MinTTL: 0
+          MaxTTL: 31536000
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+
+  # Route53 record for the domain
+  DomainRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Sub "${DomainName}."
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2 # CloudFront hosted zone ID
+
+  # Parameter to track active environment
+  ActiveEnvironmentParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/${Environment}/printapp/active-environment"
+      Type: String
+      Value: blue
+      Description: Tracks which environment (blue or green) is currently active
+
+  # Lambda function to switch environments
+  SwitchEnvironmentFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "${Environment}-printapp-switch-environment"
+      Runtime: nodejs14.x
+      Handler: index.handler
+      Role: !GetAtt SwitchEnvironmentRole.Arn
+      Code:
+        ZipFile: |
+          const AWS = require('aws-sdk');
+          const cloudfront = new AWS.CloudFront();
+          const ssm = new AWS.SSM();
+          
+          exports.handler = async (event) => {
+            const environment = event.environment || process.env.ENVIRONMENT;
+            const paramName = `/${environment}/printapp/active-environment`;
+            
+            // Get current active environment
+            const currentParam = await ssm.getParameter({ Name: paramName }).promise();
+            const currentEnv = currentParam.Parameter.Value;
+            
+            // Determine new environment
+            const newEnv = currentEnv === 'blue' ? 'green' : 'blue';
+            
+            // Update CloudFront origin
+            const distributionId = process.env.CLOUDFRONT_DISTRIBUTION_ID;
+            const distributionConfig = await getDistributionConfig(distributionId);
+            
+            // Update origin domain name
+            const bucketDomain = `${environment}-${newEnv}-printapp-bucket.s3-website-${process.env.AWS_REGION}.amazonaws.com`;
+            distributionConfig.Origins.Items[0].DomainName = bucketDomain;
+            
+            // Update CloudFront distribution
+            await updateDistribution(distributionId, distributionConfig);
+            
+            // Update SSM parameter
+            await ssm.putParameter({
+              Name: paramName,
+              Value: newEnv,
+              Type: 'String',
+              Overwrite: true
+            }).promise();
+            
+            return {
+              statusCode: 200,
+              body: JSON.stringify({ message: `Switched from ${currentEnv} to ${newEnv}` })
+            };
+          };
+          
+          async function getDistributionConfig(distributionId) {
+            const distribution = await cloudfront.getDistribution({ Id: distributionId }).promise();
+            return distribution.Distribution.DistributionConfig;
+          }
+          
+          async function updateDistribution(distributionId, distributionConfig) {
+            const etag = await cloudfront.getDistribution({ Id: distributionId }).promise().ETag;
+            
+            return cloudfront.updateDistribution({
+              Id: distributionId,
+              IfMatch: etag,
+              DistributionConfig: distributionConfig
+            }).promise();
+          }
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+          CLOUDFRONT_DISTRIBUTION_ID: !Ref CloudFrontDistribution
+          AWS_REGION: !Ref AWS::Region
+      Timeout: 60
+
+  # IAM role for the Lambda function
+  SwitchEnvironmentRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: SwitchEnvironmentPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudfront:GetDistribution
+                  - cloudfront:UpdateDistribution
+                Resource: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
+              - Effect: Allow
+                Action:
+                  - ssm:GetParameter
+                  - ssm:PutParameter
+                Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Environment}/printapp/active-environment"
+
+  # Active bucket reference (for CloudFront)
+  ActiveBucket:
+    Type: Custom::ActiveBucket
+    Properties:
+      ServiceToken: !GetAtt ActiveBucketFunction.Arn
+      BlueBucket: !Ref BlueBucket
+      GreenBucket: !Ref GreenBucket
+      ActiveEnvironment: !GetAtt ActiveEnvironmentParameter.Value
+
+  # Lambda function to determine active bucket
+  ActiveBucketFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "${Environment}-printapp-active-bucket"
+      Runtime: nodejs14.x
+      Handler: index.handler
+      Role: !GetAtt ActiveBucketRole.Arn
+      Code:
+        ZipFile: |
+          exports.handler = async (event, context) => {
+            const { BlueBucket, GreenBucket, ActiveEnvironment } = event.ResourceProperties;
+            
+            let websiteURL;
+            if (ActiveEnvironment === 'blue') {
+              websiteURL = `${BlueBucket.DomainName}`;
+            } else {
+              websiteURL = `${GreenBucket.DomainName}`;
+            }
+            
+            return {
+              PhysicalResourceId: websiteURL,
+              Data: {
+                WebsiteURL: websiteURL
+              }
+            };
+          };
+      Timeout: 30
+
+  # IAM role for the active bucket function
+  ActiveBucketRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+Outputs:
+  BlueBucketName:
+    Description: Name of the blue environment S3 bucket
+    Value: !Ref BlueBucket
+
+  GreenBucketName:
+    Description: Name of the green environment S3 bucket
+    Value: !Ref GreenBucket
+
+  BackupBucketName:
+    Description: Name of the backup S3 bucket
+    Value: !Ref BackupBucket
+
+  CloudFrontDistributionId:
+    Description: ID of the CloudFront distribution
+    Value: !Ref CloudFrontDistribution
+
+  CloudFrontDomainName:
+    Description: Domain name of the CloudFront distribution
+    Value: !GetAtt CloudFrontDistribution.DomainName
+
+  ActiveEnvironment:
+    Description: Currently active environment (blue or green)
+    Value: !GetAtt ActiveEnvironmentParameter.Value
+
+  SwitchEnvironmentFunctionName:
+    Description: Name of the Lambda function to switch environments
+    Value: !Ref SwitchEnvironmentFunction

@@ -1,4 +1,5 @@
 # ButterflyBlue Creations Logo Variations
+
 C:\Users\chris\OneDrive\Desktop\logo_files\ButterflyBlue Creations_logo.png
 This directory contains the official logo variations for ButterflyBlue Creations.
 
@@ -7,26 +8,31 @@ This directory contains the official logo variations for ButterflyBlue Creations
 The following logo variations should be created and stored in this directory:
 
 1. **Primary Logo** (`primary_logo.png`)
+
    - Full color on transparent background
    - Used for most applications on light backgrounds
    - Main brand identifier
 
 2. **White Logo** (`white_logo.png`)
+
    - White version for use on dark backgrounds
    - Maintains brand recognition on colored backgrounds
    - Used for dark mode applications
 
 3. **Square Logo** (`square_logo.png`)
+
    - Optimized for social media profiles
    - 1:1 aspect ratio
    - Used for profile pictures on social platforms
 
 4. **Favicon** (`favicon.ico`)
+
    - Simplified version for browser tabs
    - 16x16 pixels
    - Used for website browser tabs
 
 5. **Vector Version** (`logo_vector.svg`)
+
    - Scalable version for print applications
    - Infinitely scalable without quality loss
    - Used for large format printing
@@ -36,6 +42,7 @@ The following logo variations should be created and stored in this directory:
 ### Prerequisites
 
 1. Install ImageMagick:
+
    - Download from: https://imagemagick.org/script/download.php
    - Make sure it's added to your system PATH
 
@@ -69,22 +76,25 @@ If you prefer to create these variations manually or the script doesn't work:
 ## Implementation Across Platforms
 
 **Website:**
+
 - Place the logo in the top left corner of all pages
 - Link the logo to the homepage
 - Use the full color version on white/light backgrounds
 - Use the white version on dark backgrounds
 
 **Social Media:**
+
 - Use the square version for profile pictures
 - Use the full logo for cover images and headers
 - Maintain consistent placement across all platforms
 
 **Print-on-Demand Products:**
+
 - Use as a subtle brand mark on appropriate products
 - Consider a simplified version for small imprint areas
 - Follow your Print-on-Demand specific rules for placement
 
-## Need Help?
+## Need Help
 
 If you need assistance with logo creation or have questions about usage:
 1. Consult with a graphic designer

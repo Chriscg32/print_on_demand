@@ -1,0 +1,9 @@
+node_modules
+build
+coverage
+public
+dist
+.github
+.vscode
+*.config.js
+scripts

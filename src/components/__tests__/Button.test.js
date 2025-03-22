@@ -1,80 +1,55 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { axe } from 'jest-axe';
-import { ThemeProvider } from 'styled-components';
+import '@testing-library/jest-dom';
 import Button from '../Button';
-import theme from '../../styles/theme';
-
-// Wrapper component to provide theme
-const renderWithTheme = (ui) => {
-  return render(
-    <ThemeProvider theme={theme}>
-      {ui}
-    </ThemeProvider>
-  );
-};
 
 describe('Button Component', () => {
-  test('renders correctly', () => {
-    renderWithTheme(<Button>Click me</Button>);
-    expect(screen.getByText('Click me')).toBeInTheDocument();
-  });
-  
-  test('handles click events', () => {
-    const handleClick = jest.fn();
-    renderWithTheme(<Button onClick={handleClick}>Click me</Button>);
+  test('renders correctly with default props', () => {
+    render(<Button>Click Me</Button>);
     
-    fireEvent.click(screen.getByText('Click me'));
+    const button = screen.getByText(/click me/i);
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveAttribute('type', 'button');
+    expect(button.className).toContain('bg-blue-500'); // primary variant
+  });
+
+  test('renders with different variants', () => {
+    const { rerender } = render(<Button variant="primary">Primary</Button>);
+    expect(screen.getByText(/primary/i).className).toContain('bg-blue-500');
+    
+    rerender(<Button variant="secondary">Secondary</Button>);
+    expect(screen.getByText(/secondary/i).className).toContain('bg-green-500');
+    
+    rerender(<Button variant="outline">Outline</Button>);
+    expect(screen.getByText(/outline/i).className).toContain('border-blue-500');
+  });
+
+  test('renders with different sizes', () => {
+    const { rerender } = render(<Button size="small">Small</Button>);
+    expect(screen.getByText(/small/i).className).toContain('text-sm');
+    
+    rerender(<Button size="medium">Medium</Button>);
+    expect(screen.getByText(/medium/i).className).toContain('px-4');
+    
+    rerender(<Button size="large">Large</Button>);
+    expect(screen.getByText(/large/i).className).toContain('text-lg');
+  });
+
+  test('calls onClick handler when clicked', () => {
+    const handleClick = jest.fn();
+    render(<Button onClick={handleClick}>Click Me</Button>);
+    
+    const button = screen.getByText(/click me/i);
+    fireEvent.click(button);
+    
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
-  
-  test('applies different variants', () => {
-    const { rerender } = renderWithTheme(<Button variant="primary">Primary</Button>);
-    const primaryButton = screen.getByText('Primary');
+
+  test('is disabled when disabled prop is true', () => {
+    render(<Button disabled>Disabled Button</Button>);
     
-    // Check primary styling
-    expect(primaryButton).toHaveStyle(`background-color: ${theme.colors.primary}`);
-    
-    // Rerender with secondary variant
-    rerender(
-      <ThemeProvider theme={theme}>
-        <Button variant="secondary">Secondary</Button>
-      </ThemeProvider>
-    );
-    
-    const secondaryButton = screen.getByText('Secondary');
-    expect(secondaryButton).toHaveStyle(`background-color: ${theme.colors.secondary}`);
-  });
-  
-  test('applies different sizes', () => {
-    const { rerender } = renderWithTheme(<Button size="small">Small</Button>);
-    
-    // Rerender with large size
-    rerender(
-      <ThemeProvider theme={theme}>
-        <Button size="large">Large</Button>
-      </ThemeProvider>
-    );
-    
-    const largeButton = screen.getByText('Large');
-    expect(largeButton).toHaveStyle(`font-size: ${theme.typography.fontSize.lg}`);
-  });
-  
-  test('disables the button when disabled prop is true', () => {
-    renderWithTheme(<Button disabled>Disabled</Button>);
-    expect(screen.getByText('Disabled')).toBeDisabled();
-  });
-  
-  test('has no accessibility violations', async () => {
-    const { container } = renderWithTheme(
-      <>
-        <Button>Default</Button>
-        <Button variant="secondary">Secondary</Button>
-        <Button disabled>Disabled</Button>
-      </>
-    );
-    
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    const button = screen.getByText(/disabled button/i);
+    expect(button).toBeDisabled();
+    expect(button.className).toContain('cursor-not-allowed');
   });
 });

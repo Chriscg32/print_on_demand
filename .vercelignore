@@ -1,0 +1,15 @@
+# Vercel ignore file
+node_modules
+.git
+.github
+.vscode
+coverage
+*.log
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/
+tools/
+secure/
