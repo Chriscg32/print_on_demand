@@ -1,0 +1,15 @@
+This file is a placeholder. 
+
+To create your logo variations:
+
+1. Copy your original logo file from:
+   C:\Users\chris\OneDrive\Desktop\logo_files\ButterflyBlue Creations_logo.png
+
+2. Paste it into this directory:
+   C:\Users\chris\cgapp\print_on_demand\assets\logo\
+
+3. Rename it to "primary_logo.png"
+
+4. Run the generate_logo_variants.bat script in this directory
+
+This will create all the required logo variations for your brand.

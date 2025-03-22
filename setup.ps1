@@ -14,8 +14,10 @@ foreach ($dir in $directories) {
 VITE_API_URL=http://localhost:5000/api
 VITE_PRINTIFY_TOKEN=your_token_here
 SECRET_KEY=$((New-Guid).Guid)
-DATABASE_URL=sqlite:///app.db
-SHOP_ID=your_shop_id_here
+DATABASE_URL=sqlite+pysqlcipher:///app.db
+SQLCIPHER_KEY=%SQLCIPHER_KEY%
+FLASK_ENV=production
+"@ | Out-File .env -Encoding ASCII
 "@ | Out-File .env -Encoding ASCII
 
 Write-Host "✅ Setup complete! Run these next:"

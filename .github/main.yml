@@ -1,0 +1,21 @@
+name: CI/CD Pipeline
+
+on: [push]
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    - name: Install SQLCipher
+      run: |
+        choco install vcpkg -y
+        ./scripts/install-sqlcipher.ps1
+    - name: Install Dependencies
+      run: npm ci
+    - name: Run Tests
+      run: npm test

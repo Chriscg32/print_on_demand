@@ -1,13 +1,19 @@
 {
   "root": "/usr/local",
   "system_version": "1.0.0",
+  "schema_version": "1.1.0",
+  "validation_file": "/usr/local/config/architecture.schema.json",
   "nodes": [
     {
       "name": "application-server",
       "path": "/usr/local/app-server",
       "perms": "rw-r--r--",
       "sensitive": false,
-      "integrity_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "integrity_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "validation": {
+        "path_must_exist": true,
+        "required_fields": ["name", "path", "perms"]
+      }
     },
     {
       "name": "database-server",
@@ -16,7 +22,12 @@
       "sensitive": true,
       "encryption": "AES-256-GCM",
       "backup_schedule": "daily-0300UTC",
-      "access_control": "role-based"
+      "access_control": "role-based",
+      "validation": {
+        "path_must_exist": true,
+        "required_fields": ["name", "path", "perms", "encryption"],
+        "encryption_standards": ["AES-256-GCM", "AES-256-CBC", "AES-256-CBC (FIPS 140-3)"]
+      }
     },
     {
       "name": "web-server",
@@ -25,7 +36,14 @@
       "sensitive": false,
       "load_balancing": true,
       "ssl_enabled": true,
-      "certificate_path": "/etc/ssl/certs/web-server.crt"
+      "certificate_path": "/etc/ssl/certs/web-server.crt",
+      "validation": {
+        "path_must_exist": true,
+        "required_fields": ["name", "path", "perms"],
+        "conditional_requirements": [
+          {"if": "ssl_enabled", "then_require": ["certificate_path"]}
+        ]
+      }
     }
   ],
   "network": {
@@ -34,7 +52,11 @@
       {"source": "web-server", "destination": "application-server", "ports": [8080]},
       {"source": "application-server", "destination": "database-server", "ports": [5432]}
     ],
-    "vpn_required": true
+    "vpn_required": true,
+    "validation": {
+      "required_fields": ["topology", "firewall_rules"],
+      "valid_topologies": ["three-tier", "two-tier", "microservices"]
+    }
   },
   "monitoring": {
     "log_retention": "90-days",
@@ -42,6 +64,21 @@
       "cpu_usage": 85,
       "memory_usage": 90,
       "disk_usage": 80
+    },
+    "validation": {
+      "required_fields": ["log_retention", "alert_thresholds"],
+      "threshold_ranges": {
+        "cpu_usage": {"min": 0, "max": 100},
+        "memory_usage": {"min": 0, "max": 100},
+        "disk_usage": {"min": 0, "max": 100}
+      }
+    }
+  },
+  "platform_compatibility": {
+    "unix": true,
+    "windows": {
+      "supported": true,
+      "path_format": "C:\\path\\to\\resource"
     }
   }
 }

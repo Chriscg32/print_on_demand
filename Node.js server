@@ -1,0 +1,4 @@
+const sslOptions = {
+    pfx: fs.readFileSync('C:/ssl/certificate.pfx'),
+    passphrase: 'YourSecurePassphrase123!'
+};

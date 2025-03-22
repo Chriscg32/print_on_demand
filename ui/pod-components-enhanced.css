@@ -1,0 +1,707 @@
+/* 
+ * Enhanced Print-on-Demand UI Component Library
+ * Premium UI components with zero-cost improvements
+ * Features:
+ * - Improved accessibility for color-blind users
+ * - Better responsive design for mobile users
+ * - Enhanced interactive components
+ * - Modern UI patterns
+ * - Performance optimizations
+ */
+
+/* Import base component library */
+@import url('pod-components.css');
+
+:root {
+  /* Additional color variables for enhanced components */
+  --pod-primary-transparent: rgba(66, 133, 244, 0.1);
+  --pod-primary-transparent-hover: rgba(66, 133, 244, 0.2);
+  --pod-success-transparent: rgba(52, 168, 83, 0.1);
+  --pod-warning-transparent: rgba(251, 188, 4, 0.1);
+  --pod-error-transparent: rgba(234, 67, 53, 0.1);
+  
+  /* Animation speeds */
+  --pod-animation-slow: 0.5s;
+  --pod-animation-normal: 0.3s;
+  --pod-animation-fast: 0.15s;
+  
+  /* Z-index layers */
+  --pod-z-index-base: 1;
+  --pod-z-index-dropdown: 1000;
+  --pod-z-index-sticky: 1020;
+  --pod-z-index-fixed: 1030;
+  --pod-z-index-modal-backdrop: 1040;
+  --pod-z-index-modal: 1050;
+  --pod-z-index-popover: 1060;
+  --pod-z-index-tooltip: 1070;
+  --pod-z-index-toast: 1080;
+}
+
+/* Dark mode color overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --pod-gray-900: #e8eaed;
+    --pod-gray-700: #c5c8cd;
+    --pod-gray-500: #9aa0a6;
+    --pod-gray-300: #5f6368;
+    --pod-gray-100: #202124;
+    
+    --pod-primary: #8ab4f8;
+    --pod-primary-dark: #669df6;
+    --pod-primary-light: #aecbfa;
+    
+    --pod-secondary: #81c995;
+    --pod-secondary-light: #a8dab5;
+    
+    --pod-warning: #fdd663;
+    --pod-error: #f28b82;
+  }
+  
+  body {
+    background-color: #202124;
+    color: #e8eaed;
+  }
+  
+  .pod-card,
+  .pod-navbar,
+  .pod-sidebar,
+  .pod-toast,
+  .pod-form-control {
+    background-color: #2d2e30;
+    border-color: #5f6368;
+  }
+  
+  .pod-card-footer,
+  .pod-table thead th {
+    background-color: #3c4043;
+  }
+}
+
+/* Enhanced Accessibility Features */
+.pod-status {
+  position: relative;
+  padding-left: 20px;
+}
+
+.pod-status::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Enhanced status indicators with patterns for color-blind users */
+.pod-status-success::before {
+  background-color: var(--pod-secondary);
+  background-image: linear-gradient(45deg, transparent 40%, #000 40%, #000 60%, transparent 60%);
+}
+
+.pod-status-warning::before {
+  background-color: var(--pod-warning);
+  background-image: linear-gradient(to right, transparent 5px, #000 5px, #000 7px, transparent 7px);
+}
+
+.pod-status-error::before {
+  background-color: var(--pod-error);
+  background-image: linear-gradient(90deg, #000, #000 2px, transparent 2px, transparent 4px);
+}
+
+.pod-status-info::before {
+  background-color: var(--pod-primary);
+  background-image: radial-gradient(circle, #000 3px, transparent 3px);
+}
+
+/* Enhanced Toast Notifications with Animations */
+.pod-toast-container {
+  position: fixed;
+  bottom: var(--pod-space-md);
+  right: var(--pod-space-md);
+  z-index: var(--pod-z-index-toast);
+  max-width: 100%;
+  width: 350px;
+}
+
+.pod-toast {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding: var(--pod-space-md);
+  margin-top: var(--pod-space-md);
+  background-color: white;
+  border-radius: var(--pod-radius-md);
+  box-shadow: var(--pod-shadow-md);
+  transform: translateX(120%);
+  transition: transform var(--pod-animation-normal) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+.pod-toast.show {
+  transform: translateX(0);
+}
+
+.pod-toast::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.pod-toast-success::before { background-color: var(--pod-secondary); }
+.pod-toast-info::before { background-color: var(--pod-primary); }
+.pod-toast-warning::before { background-color: var(--pod-warning); }
+.pod-toast-error::before { background-color: var(--pod-error); }
+
+.pod-toast-icon {
+  flex-shrink: 0;
+  margin-right: var(--pod-space-md);
+  font-size: var(--pod-font-size-lg);
+  padding-top: 2px;
+}
+
+.pod-toast-content {
+  flex-grow: 1;
+}
+
+.pod-toast-title {
+  font-weight: 600;
+  margin-bottom: var(--pod-space-xs);
+}
+
+.pod-toast-message {
+  color: var(--pod-gray-700);
+  font-size: var(--pod-font-size-sm);
+}
+
+.pod-toast-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: var(--pod-font-size-md);
+  color: var(--pod-gray-500);
+  margin-left: var(--pod-space-sm);
+  padding: 0;
+  transition: color var(--pod-transition-fast);
+}
+
+.pod-toast-close:hover {
+  color: var(--pod-gray-700);
+}
+
+.pod-toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.pod-toast-progress-bar {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  animation: pod-toast-progress 5s linear forwards;
+}
+
+.pod-toast-success .pod-toast-progress-bar { background-color: var(--pod-secondary); }
+.pod-toast-info .pod-toast-progress-bar { background-color: var(--pod-primary); }
+.pod-toast-warning .pod-toast-progress-bar { background-color: var(--pod-warning); }
+.pod-toast-error .pod-toast-progress-bar { background-color: var(--pod-error); }
+
+@keyframes pod-toast-progress {
+  0% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+
+/* Enhanced Form Validation Visual Feedback */
+.pod-form-control.is-valid {
+  border-color: var(--pod-secondary);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2334a853' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.pod-form-control.is-invalid {
+  border-color: var(--pod-error);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23ea4335' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ea4335' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.pod-form-feedback {
+  display: none;
+  width: 100%;
+  margin-top: var(--pod-space-xs);
+  font-size: var(--pod-font-size-xs);
+}
+
+.pod-valid-feedback {
+  display: none;
+  color: var(--pod-secondary);
+}
+
+.pod-invalid-feedback {
+  display: none;
+  color: var(--pod-error);
+}
+
+.is-valid ~ .pod-valid-feedback,
+.is-valid ~ .pod-valid-tooltip {
+  display: block;
+}
+
+.is-invalid ~ .pod-invalid-feedback,
+.is-invalid ~ .pod-invalid-tooltip {
+  display: block;
+}
+
+/* Enhanced Mobile Navigation */
+.pod-navbar-toggler {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--pod-gray-300);
+  border-radius: var(--pod-radius-sm);
+  padding: var(--pod-space-xs) var(--pod-space-sm);
+  cursor: pointer;
+}
+
+.pod-navbar-toggler-icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}
+
+@media (max-width: 768px) {
+  .pod-navbar-toggler {
+    display: block;
+  }
+  
+  .pod-navbar-collapse {
+    width: 100%;
+    display: none;
+  }
+  
+  .pod-navbar-collapse.show {
+    display: block;
+  }
+  
+  .pod-navbar-nav {
+    flex-direction: column;
+    width: 100%;
+    padding-top: var(--pod-space-md);
+  }
+  
+  .pod-nav-item {
+    margin-right: 0;
+    margin-bottom: var(--pod-space-sm);
+    width: 100%;
+  }
+  
+  .pod-nav-link {
+    padding: var(--pod-space-sm) 0;
+    display: block;
+    width: 100%;
+  }
+  
+  .pod-sidebar {
+    width: 80%;
+    max-width: 300px;
+    transform: translateX(-100%);
+    z-index: var(--pod-z-index-fixed);
+  }
+  
+  .pod-sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .pod-sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: calc(var(--pod-z-index-fixed) - 1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--pod-transition-normal);
+  }
+  
+  .pod-sidebar-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Data Visualization Components (Simple CSS Charts) */
+.pod-chart {
+  margin: var(--pod-space-md) 0;
+}
+
+/* Bar Chart */
+.pod-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pod-space-sm);
+}
+
+.pod-bar-item {
+  display: flex;
+  align-items: center;
+}
+
+.pod-bar-label {
+  flex: 0 0 120px;
+  font-size: var(--pod-font-size-sm);
+  color: var(--pod-gray-700);
+}
+
+.pod-bar-track {
+  flex-grow: 1;
+  height: 12px;
+  background-color: var(--pod-gray-300);
+  border-radius: var(--pod-radius-circle);
+  overflow: hidden;
+}
+
+.pod-bar-value {
+  height: 100%;
+  background-color: var(--pod-primary);
+  border-radius: var(--pod-radius-circle);
+  transition: width var(--pod-transition-normal);
+}
+
+.pod-bar-percent {
+  flex: 0 0 50px;
+  text-align: right;
+  font-size: var(--pod-font-size-sm);
+  color: var(--pod-gray-700);
+  margin-left: var(--pod-space-sm);
+}
+
+/* Donut Chart */
+.pod-donut-chart {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.pod-donut-segment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip: rect(0, 150px, 150px, 75px);
+}
+
+.pod-donut-segment.full {
+  clip: rect(auto, auto, auto, auto);
+}
+
+.pod-donut-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip: rect(0, 75px, 150px, 0);
+  transform: rotate(0deg);
+  background-color: var(--pod-primary);
+}
+
+.pod-donut-segment.full .pod-donut-fill {
+  clip: rect(auto, auto, auto, auto);
+}
+
+.pod-donut-center {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: 120px;
+  height: 120px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.pod-donut-value {
+  font-size: var(--pod-font-size-xl);
+  font-weight: 600;
+}
+
+.pod-donut-label {
+  font-size: var(--pod-font-size-xs);
+  color: var(--pod-gray-700);
+}
+
+/* Modern Card Designs with Hover Effects */
+.pod-card {
+  transition: transform var(--pod-transition-normal), box-shadow var(--pod-transition-normal);
+  overflow: hidden;
+}
+
+.pod-card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--pod-shadow-lg);
+}
+
+.pod-card-interactive {
+  cursor: pointer;
+}
+
+.pod-card-header-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.pod-card-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.pod-card-overlay-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--pod-space-md);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  transform: translateY(100%);
+  transition: transform var(--pod-transition-normal);
+}
+
+.pod-card-overlay:hover .pod-card-overlay-content {
+  transform: translateY(0);
+}
+
+.pod-card-badge {
+  position: absolute;
+  top: var(--pod-space-sm);
+  right: var(--pod-space-sm);
+}
+
+/* Skeleton Loading States */
+.pod-skeleton {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--pod-gray-300);
+  border-radius: var(--pod-radius-sm);
+}
+
+.pod-skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: pod-skeleton-loading 1.5s infinite;
+}
+
+@keyframes pod-skeleton-loading {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.pod-skeleton-text {
+  height: 1em;
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
+.pod-skeleton-text:last-child {
+  width: 80%;
+}
+
+.pod-skeleton-circle {
+  border-radius: 50%;
+}
+
+.pod-skeleton-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.pod-skeleton-thumbnail {
+  width: 100px;
+  height: 100px;
+}
+
+.pod-skeleton-card {
+  height: 200px;
+}
+
+/* Enhanced Button Styles */
+.pod-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.pod-btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.pod-btn-ripple::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 0.8s;
+}
+
+.pod-btn-ripple:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
+
+.pod-btn-float {
+  box-shadow: var(--pod-shadow-md);
+  transition: box-shadow var(--pod-transition-normal), transform var(--pod-transition-normal);
+}
+
+.pod-btn-float:hover {
+  box-shadow: var(--pod-shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Enhanced Utility Classes */
+.pod-clickable {
+  cursor: pointer;
+}
+
+.pod-text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pod-shadow-hover {
+  transition: box-shadow var(--pod-transition-normal);
+}
+
+.pod-shadow-hover:hover {
+  box-shadow: var(--pod-shadow-lg);
+}
+
+.pod-animate-fade {
+  animation: pod-fade var(--pod-animation-normal);
+}
+
+@keyframes pod-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.pod-animate-slide-up {
+  animation: pod-slide-up var(--pod-animation-normal);
+}
+
+@keyframes pod-slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.pod-animate-slide-down {
+  animation: pod-slide-down var(--pod-animation-normal);
+}
+
+@keyframes pod-slide-down {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Performance optimizations */
+.pod-gpu {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Additional accessibility improvements */
+.pod-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.pod-focus-visible:focus-visible {
+  outline: 2px solid var(--pod-primary);
+  outline-offset: 2px;
+}
+
+/* Print styles for better document printing */
+@media print {
+  .pod-no-print {
+    display: none !important;
+  }
+  
+  .pod-card,
+  .pod-table {
+    box-shadow: none !important;
+    border: 1px solid #ddd;
+  }
+  
+  body {
+    background-color: white;
+    color: black;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
