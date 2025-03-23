@@ -1,3 +1,10 @@
+import React from 'react';
+
 export default function Home() {
-  return <div>Welcome to Print on Demand</div>;
+  return (
+    <main>
+      <h1>Print On Demand Service</h1>
+      <p>Application ready for development</p>
+    </main>
+  );
 }

@@ -1,8 +1,44 @@
+# Development environments
 new_venv/
+venv/
+.venv/
+env/
+
+# Python cache files
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+# Node modules
 node_modules/
-.DS_Store
+
+# Environment files
+.env
+.env.local
 .env*.local
+
+# Build outputs not needed
+coverage/
+.coverage
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+logs/
+
+# Test files
+tests/
+__tests__/
+
+# Other project folders not needed for deployment
+butterfly-blue-tracker/
+butterflyblue-frontend/
+butterflyblue_backend/
+flask_app/
+fullstack_project/
+simple-flask-app/
+your_project/

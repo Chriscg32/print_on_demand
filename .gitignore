@@ -7,8 +7,9 @@ venv/
 
 # Node
 node_modules/
-npm-debug.log
-yarn-error.log
+.vercel/
+.env
+dist/
 
 # Environment variables
 .env
@@ -49,5 +50,7 @@ logs/
 .vercel
 new_venv/
 node_modules
+
+.vercel
 
 .vercel

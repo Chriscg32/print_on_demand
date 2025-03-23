@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "jsx": "react-jsx", // For React 17+ new JSX transform
-    "strict": true,
-    "forceConsistentCasingInFileNames": true
-  }
-}

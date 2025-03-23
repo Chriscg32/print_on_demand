@@ -1,12 +1,21 @@
 module.exports = {
-  parser: '@typescript-eslint/parser',
+  env: {
+    browser: true,
+    node: true,
+  },
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
-    'plugin:jsx-a11y/recommended',
-    'plugin:jest/recommended'
   ],
+  parserOptions: {
+    ecmaVersion: 12,
+    sourceType: 'module',
+  },
+  rules: {
+    'no-console': 'warn',
+  },
+};
+
   plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'jest', 'react-hooks'],
   env: {
     browser: true,
