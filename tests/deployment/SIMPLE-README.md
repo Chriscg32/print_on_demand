@@ -69,6 +69,8 @@ If you see an error about a missing build script:
 
 1. Open your package.json
 2. Add a build script appropriate for your framework:
+
+
    ```json
    "scripts": {
      "build": "next build"
@@ -86,6 +88,8 @@ If your API tests fail with 404 errors:
 ### 4. Security Headers Missing
 
 If the security headers test fails:
+
+
 
 1. For Next.js, add security headers in `next.config.js`:
    ```javascript

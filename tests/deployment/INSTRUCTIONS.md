@@ -66,7 +66,7 @@ const __dirname = path.dirname(__filename);
 // Configuration - Update these values for your project
 const config = {
   // Your application URLs
-  productionUrl: 'https://your-actual-app.vercel.app', // Change this to your actual URL
+  const { stderr } = await execa('vercel', args);
   localUrl: 'http://localhost:3000',
   
   // API endpoints to test

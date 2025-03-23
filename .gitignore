@@ -45,3 +45,9 @@ logs/
 
 # Qodo specific
 .qodo
+
+.vercel
+new_venv/
+node_modules
+
+.vercel

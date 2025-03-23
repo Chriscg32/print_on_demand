@@ -234,7 +234,7 @@ function checkRequiredFiles() {
 }
 
 // Function to check AWS configuration
-function checkAwsConfiguration() {
+async function checkAwsConfiguration() {
   console.log('\n=== Checking AWS Configuration ===\n');
   
   try {

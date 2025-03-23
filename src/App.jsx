@@ -1,11 +1,10 @@
 import React from 'react'
-import Dashboard from './components/dashboard/Dashboard'
 import './App.css'
 
-function App() {
+export default function App() {
   return (
-    <Dashboard />
+    <div className="app">
+      <h1>Print On Demand</h1>
+    </div>
   )
 }
-
-export default App
