@@ -2,8 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "vite.config.ts",
-      "use": "@vercel/node"
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }

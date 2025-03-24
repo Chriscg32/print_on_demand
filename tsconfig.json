@@ -22,7 +22,11 @@
     "incremental": true
   },
   "include": [
-    "src"
+    "pages",
+    "components",
+    "lib",
+    "**/*.ts",
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules"

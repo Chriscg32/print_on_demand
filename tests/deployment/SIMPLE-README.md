@@ -1,1 +1,0 @@
-35,35:   productionUrl: 'https://your-app.vercel.app', // https://vercel.com/chris-gates-projects/print-on-demand

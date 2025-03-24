@@ -1,8 +1,12 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
-  eslint: { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: true },
-  publicRuntimeConfig: {
-    API_URL: process.env.NEXT_PUBLIC_API_URL,
+  eslint: { 
+    ignoreDuringBuilds: true 
+  },
+  typescript: { 
+    ignoreBuildErrors: true 
   }
 }
+
+module.exports = nextConfig
