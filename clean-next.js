@@ -55,3 +55,4 @@ try {
 }
 
 console.log('🎉 Cleaning process completed');
+

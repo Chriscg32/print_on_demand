@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log('🔧 Updating Next.js configuration...');
-
+process.stdout.write('🔧 Updating Next.js configuration...\n');
 const nextConfigPath = path.join(process.cwd(), 'next.config.js');
 
 try {
@@ -29,9 +28,6 @@ module.exports = nextConfig
 `;
 
   fs.writeFileSync(nextConfigPath, nextConfig);
-  console.log('✅ Updated next.config.js');
-} catch (error) {
-  console.error('❌ Error updating next.config.js:', error.message);
+  process.stdout.write('✅ Updated next.config.js\n');
+} catch (error) {  process.stderr.write(`❌ Error updating next.config.js: ${error.message}\n`);
 }
-
-console.log('🎉 Next.js configuration update completed');

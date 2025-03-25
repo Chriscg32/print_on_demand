@@ -157,15 +157,12 @@ function createVercelConfig() {
     
     fs.writeFileSync(
       vercelConfigPath,
-      JSON.stringify(vercelConfig, null, 2) + '\n'
+      `${JSON.stringify(vercelConfig, null, 2)}\n`
     );
     console.log(chalk.green('✅ Created vercel.json configuration'));
   }
 }
-
-// Run a command
-function runCommand(command) {
-  console.log(chalk.yellow(`Running: ${command}`));
+function runCommand(command) {  console.log(chalk.yellow(`Running: ${command}`));
   try {
     const output = execSync(command, { stdio: 'inherit' });
     console.log(chalk.green(`✅ Command completed successfully`));
@@ -197,6 +194,7 @@ async function main() {
   const buildSuccess = runCommand('npm run build');
   
   if (buildSuccess) {
+    // This logging is necessary to inform the user of a successful build. // skipcq: JS-0002
     console.log(chalk.green.bold('🎉 Build successful! Your project should now deploy correctly to Vercel.'));
   } else {
     console.error(chalk.red.bold('❌ Build failed. See errors above for details.'));
