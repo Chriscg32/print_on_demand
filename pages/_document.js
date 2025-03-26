@@ -1,4 +1,4 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import React from "react";import Document, { Html, Main, NextScript } from 'next/document';
 
 function MyDocument() {
   return (

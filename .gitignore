@@ -1,56 +1,64 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-venv/
-.pytest_cache/
-
-# Node
-node_modules/
-.vercel/
-.env
-dist/
-
-# Environment variables
-.env
-.env.local
-.env.development
-.env.test
-.env.production
-
-# OS specific
-.DS_Store
-Thumbs.db
-
-# Build outputs
-dist/
-build/
-*.egg-info/
-database/
-
-# IDE
-.idea/
-.vscode/
-*.sublime-project
-*.sublime-workspace
-
-# Logs
-logs/
-*.log
-
-# Backup files
-*.bak
-*.bak~
-*.swp
-*~
-
-# Qodo specific
-.qodo
-
-.vercel
-new_venv/
+module.exports = {
+  env: {
+    browser: true,
+    node: true,
+    es6: true,
+    jest: true
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:jsx-a11y/recommended',
+    'plugin:@typescript-eslint/recommended'
+  ],
+  plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'jest', 'react-hooks'],
+  parserOptions: {
+    ecmaVersion: 12,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    }
+  },
+  rules: {
+    'complexity': ['error', 10],
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    'react/prop-types': 'off',
+    'jsx-a11y/aria-role': 'error',
+    'no-console': 'warn',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+    'react/react-in-jsx-scope': 'off',
+    'no-unused-vars': 'warn',
+    'no-const-assign': 'error'
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  },
+  overrides: [
+    // Override for TypeScript files
+    {
+      files: ['**/*.ts', '**/*.tsx'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'warn'
+      }
+    },
+    // Override for test files
+    {
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+      env: {
+        jest: true
+      },
+      rules: {
+        'jest/no-disabled-tests': 'warn',
+        'jest/no-focused-tests': 'error',
+        'jest/no-identical-title': 'error',
+        'jest/prefer-to-have-length': 'warn',
+        'jest/valid-expect': 'error'
+      }
+    }
+  ]
+};
 node_modules
-
-.vercel
-
-.vercel
